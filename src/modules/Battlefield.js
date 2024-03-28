@@ -62,6 +62,20 @@ class Battlefield {
     return this.#martix;
   }
 
+  // проверка все ли корабли на поле
+  get complete() {
+    if (this.ships.length !== 10) {
+      return false;
+    }
+
+    for (const ship of this.ships) {
+      if (!ship.placed) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   // метод проверки лежат ли корабли в приделах игрового поля
   inField(x, y) {
     const isNumber = (n) =>
@@ -160,5 +174,25 @@ class Battlefield {
     }
 
     return shots.length; // возвращаем кол-ство удаляемых кораблей
+  }
+
+  // случайная расстановка кораблей
+  randomize(ShipClass = Ship) {
+    this.removeAllShips();
+
+    for (let size = 4; size >= 1; size--) {
+      for (let n = 0; n < 5 - size; n++) {
+        const direction = getRandomFrom("row", "column");
+        const ship = new ShipClass(size, direction);
+
+        while (!ship.placed) {
+          const x = getRandomBetween(0, 9);
+          const y = getRandomBetween(0, 9);
+
+          this.removeShip(ship);
+          this.addShip(ship, x, y);
+        }
+      }
+    }
   }
 }

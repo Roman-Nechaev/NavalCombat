@@ -42,7 +42,13 @@
           <button class="app-action" data-action="randomize">
             Расставить корабли случайно
           </button>
+
         </div>
+        <div class="app-actions hidden" data-scene="computer">
+          <div class="battlefield-status">Ваш ход</div>
+          <button class="app-action" data-action="randomize">Сдаться</button>
+        </div>
+
       </div>
       <div data-side="opponent"></div>
     </div>
@@ -55,7 +61,9 @@
 
   <script src="./src/modules/Application.js"></script>
   <script src="./src/modules/Scene.js"></script>
+
   <script src="./src/scenes/PreparationScene.js"></script>
+  <script src="./src/scenes/ComputerScene.js"></script>
 
   <script src="./src/modules/Battlefield.js"></script>
   <script src="./src/modules/BattlefieldView.js"></script>

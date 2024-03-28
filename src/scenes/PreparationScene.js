@@ -16,24 +16,67 @@ class PreparationScene extends Scene {
   draggetOffSetX = 0;
   draggetOffSetY = 0;
 
-  init() {
-    const { player } = this.app;
+  removeEventListeners = [];
 
-    for (const { size, direction, startX, startY } of shipDatas) {
-      const ship = new ShipView(size, direction, startX, startY);
-      player.addShip(ship);
-    }
+  init() {
+    // this.randomize = this.randomize.bind(this);
+    // this.manually = this.manually.bind(this);
+    // this.startComputer = this.startComputer.bind(this);
+
+    this.manually();
   }
 
   start() {
-    // const { player } = this.app;
-    // player.ships[0].x = 1;
-    // player.ships[0].y = 1;
+    this.removeEventListeners = [];
+
+    document
+      .querySelectorAll(".app-actions")
+      .forEach((el) => el.classList.add("hidden"));
+
+    document
+      .querySelector('[data-scene="preparation"]')
+      .classList.remove("hidden");
+
+    const randomizeButton = document.querySelector('[data-action="randomize"]');
+    const manuallyButton = document.querySelector('[data-action="manually"]');
+    const simpleButton = document.querySelector('[data-computer="simple"]');
+    const middleButton = document.querySelector('[data-computer="middle"]');
+    const hardButton = document.querySelector('[data-computer="hard"]');
+
+    this.removeEventListeners.push(
+      addEventListener(randomizeButton, "click", () => this.randomize())
+    );
+
+    this.removeEventListeners.push(
+      addEventListener(manuallyButton, "click", () => this.manually())
+    );
+    this.removeEventListeners.push(
+      addEventListener(simpleButton, "click", () =>
+        this.startComputer("simple")
+      )
+    );
+    this.removeEventListeners.push(
+      addEventListener(middleButton, "click", () =>
+        this.startComputer("middle")
+      )
+    );
+    this.removeEventListeners.push(
+      addEventListener(hardButton, "click", () => this.startComputer("hard"))
+    );
+  }
+
+  stop() {
+    for (const removeEventListener of this.removeEventListeners) {
+      removeEventListener();
+    }
+
+    this.removeEventListeners = [];
   }
 
   update() {
     const { mouse, player } = this.app;
 
+    // потенциально хотим перетаскивать корабль
     if (!this.draggedShip && mouse.left && !mouse.pLeft) {
       const ship = player.ships.find((ship) => ship.isUnder(mouse));
 
@@ -92,9 +135,43 @@ class PreparationScene extends Scene {
     if (this.draggedShip && mouse.delta) {
       this.draggedShip.toggleDirection();
     }
+
+    if (player.complete) {
+      document.querySelector('[data-computer="simple"]').disabled = false;
+      document.querySelector('[data-computer="middle"]').disabled = false;
+      document.querySelector('[data-computer="hard"]').disabled = false;
+    } else {
+      document.querySelector('[data-computer="simple"]').disabled = true;
+      document.querySelector('[data-computer="middle"]').disabled = true;
+      document.querySelector('[data-computer="hard"]').disabled = true;
+    }
   }
 
-  stop() {
-    console.log("PreparationScene stop");
+  randomize() {
+    const { player } = this.app;
+    player.randomize(ShipView);
+
+    for (let i = 0; i < 10; i++) {
+      const ship = player.ships[i];
+      ship.startX = shipDatas[i].startX;
+      ship.startY = shipDatas[i].startY;
+    }
+  }
+
+  manually() {
+    const { player } = this.app;
+
+    player.removeAllShips();
+
+    for (const { size, direction, startX, startY } of shipDatas) {
+      const ship = new ShipView(size, direction, startX, startY);
+      player.addShip(ship);
+    }
+  }
+
+  startComputer(level) {
+    console.log(level);
+
+    this.app.start("computer");
   }
 }
