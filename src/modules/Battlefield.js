@@ -2,13 +2,23 @@ class Battlefield {
   ships = [];
   shots = [];
 
-  #martix = null;
-  #changed = true;
+  _privat_martix = null;
+  _privat_changed = true;
+
+  get loser() {
+    for (const ship of this.ships) {
+      if (!ship.killed) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   // матрица игрового поля
   get matrix() {
-    if (!this.#changed) {
-      this.#martix;
+    if (!this._privat_changed) {
+      this._privat_martix;
     }
 
     const matrix = [];
@@ -22,6 +32,8 @@ class Battlefield {
           y,
           ship: null,
           free: true,
+          shoted: false,
+          wounded: false,
         };
 
         row.push(item);
@@ -56,10 +68,19 @@ class Battlefield {
       }
     }
 
-    this.#martix = matrix;
-    this.#changed = false;
+    for (const { x, y } of this.shots) {
+      const item = matrix[y][x];
+      item.shoted = true;
 
-    return this.#martix;
+      if (item.ship) {
+        item.wounded = true;
+      }
+    }
+
+    this._privat_martix = matrix;
+    this._privat_changed = false;
+
+    return this._privat_martix;
   }
 
   // проверка все ли корабли на поле
@@ -124,7 +145,7 @@ class Battlefield {
       }
     }
 
-    this.#changed = true;
+    this._privat_changed = true;
     return true;
   }
 
@@ -142,7 +163,7 @@ class Battlefield {
     ship.x = null;
     ship.y = null;
     // возвращаем  true в случае успешного удаления
-    this.#changed = true;
+    this._privat_changed = true;
 
     return true;
   }
@@ -158,12 +179,70 @@ class Battlefield {
     return ships.length; // возвращаем кол-ство удаляемых кораблей
   }
 
-  addShot() {
-    this.#changed = true;
+  addShot(shot) {
+    // рповеряем был ли выстрел
+    for (const { x, y } of this.shots) {
+      if (x === shot.x && y === shot.y) {
+        return false;
+      }
+    }
+
+    this.shots.push(shot);
+
+    this._privat_changed = true;
+
+    const matrix = this.matrix;
+    const { x, y } = shot;
+
+    if (matrix[y][x].ship) {
+      shot.setVariant("wounded");
+
+      const { ship } = matrix[y][x];
+      const dx = ship.direction === "row";
+      const dy = ship.direction === "column";
+
+      let killed = true;
+
+      for (let i = 0; i < ship.size; i++) {
+        const cx = ship.x + dx * i;
+        const cy = ship.y + dy * i;
+        const item = matrix[cy][cx];
+
+        if (!item.wounded) {
+          killed = false;
+          break;
+        }
+      }
+
+      if (killed) {
+        ship.killed = true;
+
+        for (let i = 0; i < ship.size; i++) {
+          const cx = ship.x + dx * i;
+          const cy = ship.y + dy * i;
+          const item = matrix[cy][cx];
+
+          const shot = this.shots.find(
+            (shot) => shot.x === cx && shot.y === cy
+          );
+          shot.setVariant("killed");
+        }
+      }
+    }
+
+    return true;
   }
 
-  removeShot() {
-    this.#changed = true;
+  removeShot(shot) {
+    if (!this.shots.includes(shot)) {
+      return false;
+    }
+
+    const index = this.shots.indexOf(shot);
+    this.shots.splice(index, 1);
+
+    this._privat_changed = true;
+    return true;
   }
 
   removeAllShots() {
@@ -194,5 +273,10 @@ class Battlefield {
         }
       }
     }
+  }
+
+  clear() {
+    this.removeAllShots();
+    this.removeAllShips();
   }
 }

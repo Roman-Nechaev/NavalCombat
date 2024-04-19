@@ -6,8 +6,8 @@ class Scene {
     Object.assign(this, { name, app });
 
     // вместо
-    this.name = name;
-    this.app = app;
+    // this.name = name;
+    // this.app = app;
   }
 
   init() {}

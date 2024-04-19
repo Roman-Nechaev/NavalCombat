@@ -9,6 +9,12 @@ class ShipView extends Ship {
     const div = document.createElement("div");
     div.classList.add("ship");
 
+    // const image = document.createElement("img");
+    // image.src =
+    //   "../../public/home-home-sea-container-ship-icon-11563195830cq8dtw2n3l.png";
+    // image.alt = "Ship icon";
+    // div.appendChild(image);
+
     Object.assign(this, { div, startX, startY });
     this.div = div;
     this.setDirection(direction, true);

@@ -16,6 +16,11 @@
   <!-- <canvas id="canvas" width="600" height="400">
   </canvas> -->
   <div class="app">
+    <div class="app-header">
+      <p class="app-subtitle">
+        <span data-playersCount>0</span> игроков онлайн
+      </p>
+    </div>
     <div class="app-body">
 
       <div data-side="player"></div>
@@ -36,6 +41,9 @@
           <button class="app-action" data-type="challenge" disabled>
             Вызвать на бой
           </button>
+          <button class="app-action" data-type="takeChallenge" disabled>
+            Принять вызов
+          </button>
           <button class="app-action" data-action="manually">
             Расставить корабли вручную
           </button>
@@ -46,13 +54,35 @@
         </div>
         <div class="app-actions hidden" data-scene="computer">
           <div class="battlefield-status">Ваш ход</div>
-          <button class="app-action" data-action="randomize">Сдаться</button>
+          <button class="app-action" data-action="gaveup">Сдаться</button>
+          <button class="app-action" data-action="again">
+            Играть еще раз
+          </button>
+
+        </div>
+
+        <div class="app-actions hidden" data-scene="online">
+          <div class="battlefield-status">Ваш ход</div>
+          <button class="app-action" data-action="gaveup">Сдаться</button>
+          <button class="app-action" data-action="again">
+            Играть еще раз
+          </button>
+
         </div>
 
       </div>
       <div data-side="opponent"></div>
     </div>
+    <div class="app-chat hidden">
+      <input class="app-chatinput" />
+      <div class="app-messages">
+        <!-- <div class="app-message">Сообщение сообщение</div>
+        <div class="app-message">Сообщение сообщение</div>
+        <div class="app-message">Сообщение сообщение</div> -->
+      </div>
+    </div>
   </div>
+
   </div>
   <!-- <script type="module" src="/main.js"></script> -->
   <!-- <script type="module" src="/m.js"></script> -->
@@ -64,6 +94,7 @@
 
   <script src="./src/scenes/PreparationScene.js"></script>
   <script src="./src/scenes/ComputerScene.js"></script>
+  <script src="./src/scenes/OnlineScene.js"></script>
 
   <script src="./src/modules/Battlefield.js"></script>
   <script src="./src/modules/BattlefieldView.js"></script>
@@ -71,7 +102,10 @@
   <script src="./src/modules/Ship.js"></script>
   <script src="./src/modules/ShipView.js"></script>
 
+  <script src="./src/modules/Shot.js"></script>
+  <script src="./src/modules/ShotView.js"></script>
 
+  <script src="/socket.io/socket.io.js"></script>
   <script type="module" src="./script.js"></script>
 </body>
 

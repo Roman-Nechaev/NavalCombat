@@ -21,6 +21,8 @@ body {
 
 .app-body {
   margin-top: 50px;
+  margin-bottom: 20px;
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -50,6 +52,10 @@ body {
   width: 32px;
   height: 32px;
   border: 1px solid rgba(6, 25, 247, 0.15);
+}
+
+.battlefield-item__active {
+  background: rgba(123, 121, 255, 0.2);
 }
 
 .marker {
@@ -86,6 +92,16 @@ body {
   background: rgba(0, 55, 255, 0.45);
   width: 32px;
   height: 32px;
+}
+
+.ship img {
+  /* Добавьте стили для иконки */
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .ship-row-1 {
@@ -141,7 +157,8 @@ body {
 }
 
 .shot-missed {
-  color: gray;
+  /* color: gray; */
+  color: "black";
 }
 
 .shot-wounded {
@@ -174,10 +191,32 @@ body {
 }
 
 .shot-killed {
-  margin: -2px;
-  border: 2px solid red;
+  margin: -3px;
+  border: 3px solid red;
 }
 
 .hidden {
   display: none;
+}
+
+.app-chat {
+}
+
+.app-chatinput {
+  display: flex;
+  margin: 0 auto;
+  width: 80%;
+  height: 35px;
+  font-size: 25px;
+  text-align: left;
+}
+
+.app-messages {
+}
+
+.app-message {
+  text-align: center;
+  color: #3c3c3c;
+  font-size: 16px;
+  margin-top: 10px;
 }
