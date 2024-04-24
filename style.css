@@ -96,12 +96,42 @@ body {
 
 .ship img {
   /* Добавьте стили для иконки */
-  width: 50px;
-  height: 50px;
-  position: absolute;
+  /* display: block; */
+  height: 100%;
+  width: 100%;
+  /* width: 50px;
+  height: 50px; */
+
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
+
+  /* transform-origin: center center; */
+  object-fit: cover;
+}
+.ship-icon {
+  /* width: 50px;
+  height: 50px; */
+
+  /* position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+
+  /* transform-origin: center center; */
+}
+
+.icon-row {
+  /* background-color: tomato;
+  transform: rotate(90deg);
+  display: block;
+  height: 100%;
+  width: 100%; */
+}
+
+.icon-column {
+  background-color: black;
 }
 
 .ship-row-1 {
@@ -117,6 +147,14 @@ body {
 
 .ship-row-4 {
   width: 131px;
+}
+
+.icon-row .ship-row-4 {
+  background-color: tomato;
+  transform: rotate(90deg);
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 .ship-column-1 {

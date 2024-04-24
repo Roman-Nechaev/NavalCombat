@@ -6,10 +6,10 @@ class OnlineScene extends Scene {
   removeEventListeners = [];
 
   init() {
-    const { socket, player, opponent } = this.app;
-
     const actionsBar = document.querySelector('[data-scene="online"]');
     this.actionsBar = actionsBar;
+
+    const { socket, player, opponent } = this.app;
 
     socket.on("statusChange", (status) => {
       this.status = status;
@@ -22,7 +22,6 @@ class OnlineScene extends Scene {
     });
 
     socket.on("message", (message) => {
-      console.log(message);
       const div = document.createElement("div");
       div.classList.add("app-message");
       div.textContent = message;
@@ -33,6 +32,7 @@ class OnlineScene extends Scene {
 
     socket.on("addShot", ({ x, y, variant }) => {
       const shot = new ShotView(x, y, variant);
+
       if (this.ownTurn) {
         this.app.opponent.addShot(shot);
       } else {
@@ -56,9 +56,11 @@ class OnlineScene extends Scene {
       }
     });
 
-    // реализация ссылки  для вызова на бой
     socket.on("challengeOpponent", (key) => {
       history.pushState(null, null, `/${key}`);
+      alert(
+        `Первый кто пройдет по этой ссылки будет играть с вами:\n${location.href}`
+      );
     });
 
     this.statusUpdate();
@@ -90,7 +92,7 @@ class OnlineScene extends Scene {
 
     document
       .querySelectorAll(".app-actions")
-      .forEach((el) => el.classList.add("hidden"));
+      .forEach((element) => element.classList.add("hidden"));
 
     const sceneActionsBar = document.querySelector('[data-scene="online"]');
     sceneActionsBar.classList.remove("hidden");
@@ -139,9 +141,7 @@ class OnlineScene extends Scene {
 
     this.removeEventListeners = [];
 
-    const chat = document.querySelector(".app-chat");
-    chat.classList.add("hidden");
-
+    document.querySelector(".app-chat").classList.add("hidden");
     document.querySelector(".app-messages").textContent = "";
   }
 
@@ -155,13 +155,14 @@ class OnlineScene extends Scene {
     } else if (this.status === "play") {
       statusDiv.textContent = this.ownTurn ? "Ваш ход" : "Ход соперника";
     } else if (this.status === "winner") {
-      statusDiv.textContent = "Вы победили!";
+      statusDiv.textContent = "Вы победили";
     } else if (this.status === "loser") {
-      statusDiv.textContent = "Вы проиграли!";
+      statusDiv.textContent = "Вы проиграли";
     } else if (this.status === "waiting") {
       statusDiv.textContent = "Ожидаем соперника";
     }
   }
+
   update() {
     const { mouse, opponent, player, socket } = this.app;
 
@@ -170,6 +171,7 @@ class OnlineScene extends Scene {
 
     if (["loser", "winner"].includes(this.status)) {
       const sceneActionsBar = document.querySelector('[data-scene="online"]');
+
       const againButton = sceneActionsBar.querySelector(
         '[data-action="again"]'
       );

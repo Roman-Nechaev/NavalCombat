@@ -28,7 +28,6 @@ class PreparationScene extends Scene {
     opponent.clear();
     player.removeAllShips();
     player.removeAllShots();
-
     player.ships.forEach((ship) => (ship.killed = false));
 
     this.removeEventListeners = [];
@@ -41,8 +40,8 @@ class PreparationScene extends Scene {
       .querySelector('[data-scene="preparation"]')
       .classList.remove("hidden");
 
-    const randomizeButton = document.querySelector('[data-action="randomize"]');
     const manuallyButton = document.querySelector('[data-action="manually"]');
+    const randomizeButton = document.querySelector('[data-action="randomize"]');
     const simpleButton = document.querySelector('[data-computer="simple"]');
     const middleButton = document.querySelector('[data-computer="middle"]');
     const hardButton = document.querySelector('[data-computer="hard"]');
@@ -53,12 +52,13 @@ class PreparationScene extends Scene {
     );
 
     this.removeEventListeners.push(
-      addListener(randomizeButton, "click", () => this.randomize())
+      addListener(manuallyButton, "click", () => this.manually())
     );
 
     this.removeEventListeners.push(
-      addListener(manuallyButton, "click", () => this.manually())
+      addListener(randomizeButton, "click", () => this.randomize())
     );
+
     this.removeEventListeners.push(
       addListener(simpleButton, "click", () => this.startComputer("simple"))
     );
@@ -70,20 +70,20 @@ class PreparationScene extends Scene {
     );
     this.removeEventListeners.push(
       addListener(randomButton, "click", () =>
-        this.app.start("onLine", "random")
+        this.app.start("online", "random")
       )
     );
 
     this.removeEventListeners.push(
       addListener(challengeButton, "click", () =>
-        this.app.start("onLine", "challenge")
+        this.app.start("online", "challenge")
       )
     );
 
     this.removeEventListeners.push(
       addListener(takeChallengeButton, "click", () => {
         const key = prompt("Ключ партии:");
-        this.app.start("onLine", "challenge", key);
+        this.app.start("online", "challenge", key);
       })
     );
   }

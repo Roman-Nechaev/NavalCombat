@@ -1,7 +1,7 @@
 const app = new Application({
   preparation: PreparationScene,
   computer: ComputerScene,
-  onLine: OnlineScene,
+  online: OnlineScene,
 });
 
 app.start("preparation");

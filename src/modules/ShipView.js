@@ -1,8 +1,11 @@
 class ShipView extends Ship {
   div = null;
 
+  image = null;
+
   startX = null;
   startY = null;
+
   constructor(size, direction, startX, startY) {
     super(size, direction);
 
@@ -10,13 +13,14 @@ class ShipView extends Ship {
     div.classList.add("ship");
 
     // const image = document.createElement("img");
-    // image.src =
-    //   "../../public/home-home-sea-container-ship-icon-11563195830cq8dtw2n3l.png";
+    // image.classList.add("ship-icon");
+    // image.src = `../../public/model/a${size}.png`;
     // image.alt = "Ship icon";
     // div.appendChild(image);
 
     Object.assign(this, { div, startX, startY });
     this.div = div;
+    // this.image = image;
     this.setDirection(direction, true);
   }
 
@@ -26,8 +30,12 @@ class ShipView extends Ship {
       return false;
     }
     this.div.classList.remove(`ship-${this.direction}-${this.size}`);
+
+    // this.image.classList.remove(`icon-${this.direction}`);
     this.direction = newDirection;
     this.div.classList.add(`ship-${this.direction}-${this.size}`);
+
+    // this.image.classList.add(`icon-${this.direction}`);
 
     return true;
   }
